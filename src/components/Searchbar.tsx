@@ -1,12 +1,13 @@
 import "./Searchbar.css";
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import axios from "axios";
 import { useState } from "react";
 import { AiOutlineStar } from "react-icons/ai";
 import { useNavigate } from "react-router";
 import { SkeletonSearch } from "../functions/SkeletonStates";
 import type { Book } from "../types/book";
 import { MobileMenu } from "./Sidebar";
+import { createPortal } from "react-dom";
+import axios from "axios";
 
 export default function Searchbar() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -38,6 +39,7 @@ export default function Searchbar() {
       <div className="row--searchbar">
         <form
           action=""
+          id="portal-root"
           className="search__form"
           onChange={(event) => setSearch(event.target.value)}
           onSubmit={handleSubmit}
@@ -50,28 +52,34 @@ export default function Searchbar() {
         <MobileMenu />
 
         {(loading || books.length > 0) && (
-          <div className="modal__backdrop" onClick={() => setBooks([])}>
-            <div className="search__modal--container">
-              {loading && new Array(5).fill(0).map((_, i) => <SkeletonSearch key={i} />)}
+          <>
+            {createPortal(
+              <>
+                <div className="modal__backdrop" onClick={() => setBooks([])} />
+                <div className="search__modal--container">
+                  {loading && new Array(5).fill(0).map((_, i) => <SkeletonSearch key={i} />)}
 
-              {!loading &&
-                books.map((book) => (
-                  <a className="result--wrapper" key={book.id} onClick={() => handleBookClick(book.id)}>
-                    <figure className="result__img--wrapper">
-                      <img src={book.imageLink} alt="" className="result__img" />
-                    </figure>
-                    <div className="result__content">
-                      <div className="result__title">{book.title}</div>
-                      <div className="result__author">{book.author}</div>
-                      <div className="result__duration--wrapper">
-                        <AiOutlineStar />
-                        <div className="result__duration">&nbsp;{book.averageRating}</div>
-                      </div>
-                    </div>
-                  </a>
-                ))}
-            </div>
-          </div>
+                  {!loading &&
+                    books.map((book) => (
+                      <a className="result--wrapper" key={book.id} onClick={() => handleBookClick(book.id)}>
+                        <figure className="result__img--wrapper">
+                          <img src={book.imageLink} alt="" className="result__img" />
+                        </figure>
+                        <div className="result__content">
+                          <div className="result__title">{book.title}</div>
+                          <div className="result__author">{book.author}</div>
+                          <div className="result__duration--wrapper">
+                            <AiOutlineStar />
+                            <div className="result__duration">&nbsp;{book.averageRating}</div>
+                          </div>
+                        </div>
+                      </a>
+                    ))}
+                </div>
+              </>,
+              document.getElementById("portal-root")!,
+            )}
+          </>
         )}
       </div>
     </div>

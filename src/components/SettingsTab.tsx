@@ -45,6 +45,14 @@ export default function Settings() {
               Manage Subscription
             </button>
           </div>
+
+          {user.email === "guest@email.com" && (
+            <div className="settings__content">
+              <button className="settings__btn btn" onClick={() => navigate("/choose-plan")}>
+                See All Plans
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>

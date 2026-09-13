@@ -190,6 +190,10 @@
     align-items: center;
   }
 
+  .inner__book {
+    width: 100%;
+  }
+
   .inner-book__title {
     font-size: 24px;
   }
