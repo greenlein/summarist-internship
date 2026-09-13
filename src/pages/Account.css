@@ -244,6 +244,26 @@
 
 .settings__btn {
   width: 200px;
+  position: relative;
+}
+
+.settings__spinner {
+  position: absolute;
+  right: 44%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  /* opacity: 0; */
+  animation: spin 1000ms linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* IF LOGGED OUT */
